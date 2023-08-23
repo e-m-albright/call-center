@@ -1,0 +1,8 @@
+.gitignore
+.git
+.vscode
+venv
+__pycache__
+LICENSE
+README.md
+out
