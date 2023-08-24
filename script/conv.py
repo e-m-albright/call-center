@@ -49,7 +49,6 @@ async def main():
             action_factory=TextingActionFactory(),
             logger=logger,
         ),
-        # TODO log the transcriber/synthesizer?
         transcriber=deepgram.transcriber(deepgram.cnf_for_device(microphone_input)),
         synthesizer=elevenlabs.synthesizer(elevenlabs.cnf_for_device(speaker_output)),
         events_manager=EventsManager(),

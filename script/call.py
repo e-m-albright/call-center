@@ -1,5 +1,8 @@
 """
 Execute an outbound call with an Agent
+
+TODO the call doesn't seem to wait - the process isn't looping and can't have a conversation?
+
 """
 import os
 
@@ -47,8 +50,6 @@ async def main():
 
     input("Press enter to start call...")
     await outbound_call.start()
-
-    # TODO: this isn't seemingly working. The call doesn't stream back and forth. Needs the telephony server?
 
 
 if __name__ == "__main__":

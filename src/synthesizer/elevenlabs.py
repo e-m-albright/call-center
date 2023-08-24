@@ -13,7 +13,7 @@ from vocode.streaming.models.synthesizer import (
 
 
 class Voices:
-    # TODO - could read directly from https://api.elevenlabs.io/v1/voices
+    # Could read directly from https://api.elevenlabs.io/v1/voices
     fin = "D38z5RcWu1voky8WS1ja"
 
 

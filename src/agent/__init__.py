@@ -18,7 +18,8 @@ class AppAgentFactory(AgentFactory):
             return openai.agent(
                 agent_config,
                 logger=logger,
-                # TODO texting isn't working as an action just yet
+                # Action Factory selection is specified via configuration actions
+                # include a list of configurations that map to the desired actions
                 action_factory=TextingActionFactory(),
             )
         raise Exception("Invalid agent config")

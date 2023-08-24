@@ -36,7 +36,7 @@ def server(base_url: str, config_manager: RedisConfigManager, logger: logging.Lo
                 agent_config=openai.cnf(
                     generate_responses=True,
                     end_conversation_on_goodbye=True,
-                    # TODO this is hardcoded to the dotenv variables. Where do I pick up the in/out numbers here?
+                    # TODO see the texting action for note on specifying inbound number
                     actions=[TwilioSendTextActionConfig()],
                 ),
                 transcriber_config=deepgram.cnf_for_telephone(),
