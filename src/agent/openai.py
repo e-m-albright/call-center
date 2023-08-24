@@ -15,7 +15,6 @@ def cnf(*args, **kwargs) -> AgentConfig:
     return ChatGPTAgentConfig(
         initial_message=BaseMessage(text=agenda.initial),
         prompt_preamble=agenda.preamble,
-        # expected_first_prompt=agenda.first,
         *args,
         **kwargs,
     )

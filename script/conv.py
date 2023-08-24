@@ -23,6 +23,7 @@ from vocode.helpers import (
 
 from src.loggers import stream_logger
 from src.agent import openai
+from src.agent.prompt import agenda
 from src.transcriber import deepgram
 from src.synthesizer import elevenlabs
 from src.eventsmanager import EventsManager
@@ -42,6 +43,7 @@ async def main():
             openai.cnf(
                 generate_responses=True,
                 end_conversation_on_goodbye=True,
+                prompt_preamble=agenda.test_preamble,
                 actions=[TwilioSendTextActionConfig()],
             ),
             action_factory=TextingActionFactory(),

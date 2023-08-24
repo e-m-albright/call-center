@@ -22,7 +22,6 @@ logger = stream_logger(__file__)
 class TextingActionFactory(ActionFactory):
     def create_action(self, action_config: ActionConfig) -> BaseAction:
         if isinstance(action_config, TwilioSendTextActionConfig):
-            logger.info("FUCKING GODDAMNIT WHAT")
             return TwilioSendText(action_config, should_respond=True)
         else:
             raise Exception("Invalid action type")
@@ -52,19 +51,28 @@ class TwilioSendText(
     async def run(
         self, action_input: ActionInput[TwilioSendTextParameters]
     ) -> ActionOutput[TwilioSendTextResponse]:
-        logger.info("TOOL USEEEEEEE")
+        logger.info("Text message action triggered")
+
+        logger.info(f"Message body: {action_input}")
+        logger.info(f"ac: {action_input.action_config}")
+        logger.info(f"ci: {action_input.conversation_id}")
+        logger.info(f"p: {action_input.params}")
+        logger.info(f"umt: {action_input.user_message_tracker}")
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         client = Client(account_sid, auth_token)
 
+        # TODO this is hardcoded to the dotenv vars
+        # use action_input.conversation_id to phone number lookup? force the agent to provide the transcription number?
+        # RedisConfigManager has a action_input.conversation_id lookup - could that help store the number?
         message = client.messages.create(
             from_=os.getenv("FROM_PHONE"),
             body=action_input.params.message,
             to=os.getenv("TO_PHONE"),
         )
-        # print(message)
-        # print(message.sid)
+        logger.info(f"Sent text message: {message.sid}")
+        logger.debug(f"Message body: {action_input.params.message}")
 
         return ActionOutput(
             action_type=self.action_config.type,

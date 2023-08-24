@@ -9,20 +9,12 @@ The only availability is with Doctor McDreamy on Monday at 10am.
 Send the patient a text message with the appointment details once confirmed.
 """
 
-# TODO testing "short" dialogue
-preamble = """
+# "short" dialogue for testing
+test_preamble = """
 You are a nice healthcare coordinator helping a patient schedule an appointment with a physician.
 Ask for the patient's name, 
 Send the patient a text message with their name.
 """
-
-
-# Try introducing "actions" in the intructions? - action = scheduled apt > sms to caller
-
-# This is not being used
-# This is the first prompt the USER sends to the agent - not yet sure how to use this for anything
-# See agent.create_first_response
-first = """Hello this is the first message"""
 
 # The first contact message, before generation begins and drives the conversation thereafter
 initial = (
