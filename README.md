@@ -14,7 +14,7 @@ This application was made to accomplish the following requirements
 
 # Telephony
 
-This project was build off of the Vocode Telephony tutorial.
+This project was built off of the Vocode Telephony tutorial.
 
 * [docs](https://docs.vocode.dev/open-source/telephony)
 * [github](https://github.com/vocodedev/vocode-python/tree/main/apps/telephony_app)

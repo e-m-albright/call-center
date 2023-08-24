@@ -11,9 +11,9 @@ from src import ROOT_DIR
 from src.loggers import stream_logger
 
 
-logger = stream_logger(__name__)
+logger = stream_logger(__file__)
 
-CALL_TRANSCRIPTS_DIR = os.path.join(os.path.dirname(__file__), "out/transcripts")
+CALL_TRANSCRIPTS_DIR = ROOT_DIR / "out" / "transcripts"
 os.makedirs(CALL_TRANSCRIPTS_DIR, exist_ok=True)
 
 

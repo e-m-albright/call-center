@@ -26,11 +26,11 @@ from src.agent import openai
 from src.transcriber import deepgram
 from src.synthesizer import elevenlabs
 from src.eventsmanager import EventsManager
-from src.agent.action.texting import TextingActionFactory
+from src.agent.action.texting import TextingActionFactory, TwilioSendTextActionConfig
 
 load_dotenv()
 
-logger = stream_logger(__name__)
+logger = stream_logger(__file__)
 
 
 async def main():
@@ -39,7 +39,11 @@ async def main():
     conversation = StreamingConversation(
         output_device=speaker_output,
         agent=openai.agent(
-            openai.cnf(generate_responses=True, end_conversation_on_goodbye=True),
+            openai.cnf(
+                generate_responses=True,
+                end_conversation_on_goodbye=True,
+                actions=[TwilioSendTextActionConfig()],
+            ),
             action_factory=TextingActionFactory(),
             logger=logger,
         ),

@@ -19,7 +19,7 @@ from src.transcriber import deepgram
 
 
 load_dotenv()
-logger = stream_logger(__name__)
+logger = stream_logger(__file__)
 
 BASE_URL = os.environ["BASE_URL"]
 FROM_PHONE = os.environ["FROM_PHONE"]

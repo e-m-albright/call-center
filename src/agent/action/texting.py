@@ -13,10 +13,16 @@ from vocode.streaming.action.base_action import BaseAction
 from vocode.streaming.models.actions import ActionConfig
 from twilio.rest import Client
 
+from src.loggers import stream_logger
+
+
+logger = stream_logger(__file__)
+
 
 class TextingActionFactory(ActionFactory):
     def create_action(self, action_config: ActionConfig) -> BaseAction:
         if isinstance(action_config, TwilioSendTextActionConfig):
+            logger.info("FUCKING GODDAMNIT WHAT")
             return TwilioSendText(action_config, should_respond=True)
         else:
             raise Exception("Invalid action type")
@@ -39,13 +45,15 @@ class TwilioSendText(
         TwilioSendTextActionConfig, TwilioSendTextParameters, TwilioSendTextResponse
     ]
 ):
-    description: str = "Sends a text message using the Twilio API."
+    description: str = "Sends a text message to the patient."
     parameters_type: Type[TwilioSendTextParameters] = TwilioSendTextParameters
     response_type: Type[TwilioSendTextResponse] = TwilioSendTextResponse
 
     async def run(
         self, action_input: ActionInput[TwilioSendTextParameters]
     ) -> ActionOutput[TwilioSendTextResponse]:
+        logger.info("TOOL USEEEEEEE")
+
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         client = Client(account_sid, auth_token)
