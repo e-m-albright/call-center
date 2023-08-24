@@ -71,7 +71,3 @@ Call the Twilio number on your phone once your Twilio setting is updated.
 You can alternatively try out the testing scripts in `script` like `script/call.py` or `script/conv.py`
 
 Use python or use poetry like so `poetry run python /script/conv.py`
-
-# TODOs
-
-- Agent texting - get the inbound number or use the transcript to get a number

@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Optional, Type, cast, Any
 from pydantic import BaseModel, Field
 import os
 from vocode.streaming.action.base_action import BaseAction
@@ -11,12 +11,24 @@ from vocode.streaming.models.actions import (
 from vocode.streaming.action.factory import ActionFactory
 from vocode.streaming.action.base_action import BaseAction
 from vocode.streaming.models.actions import ActionConfig
+from vocode.streaming.telephony.config_manager.base_config_manager import (
+    BaseConfigManager,
+)
 from twilio.rest import Client
 
 from src.loggers import stream_logger
 
 
 logger = stream_logger(__file__)
+
+
+# TODO reinitialized redis config manager used globally here cannot be the right way to do this
+# should ask the community or keep poking around to see how to pass in the right info to the action config
+from vocode.streaming.telephony.config_manager.redis_config_manager import (
+    RedisConfigManager,
+)
+
+config_manager = RedisConfigManager()
 
 
 class TextingActionFactory(ActionFactory):
@@ -28,10 +40,12 @@ class TextingActionFactory(ActionFactory):
 
 
 class TwilioSendTextActionConfig(ActionConfig, type="action_twilio_send_text"):
+    # config_manager: Optional[Any] = None  # TODO: getting tired, optional[any] is bad
     pass
 
 
 class TwilioSendTextParameters(BaseModel):
+    # TODO adding a number here might allow the agent to pick the number to send to from the transcription
     message: str = Field(..., description="The message to send.")
 
 
@@ -59,15 +73,30 @@ class TwilioSendText(
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
         client = Client(account_sid, auth_token)
 
-        # TODO this is hardcoded to the dotenv vars
-        # use action_input.conversation_id to phone number lookup? force the agent to provide the transcription number?
-        # RedisConfigManager has a action_input.conversation_id lookup - could that help store the number?
+        logger.info("Text action getting phone numbers")
+        # action_config = cast(TwilioSendTextActionConfig, self.action_config)
+        if config_manager is not None:
+            logger.info("Config manager found, using config manager")
+            call_config = await config_manager.get_config(
+                conversation_id=action_input.conversation_id
+            )
+            logger.info(f"Call config: {call_config}")
+            # Note the swap - this should be an inbound call, hence "from" is the text target, and "to" is the service's number
+            from_phone = call_config.to_phone
+            to_phone = call_config.from_phone
+        else:
+            # Should just be in testing
+            logger.info("No config manager found, using dotenv vars")
+            # b/c it's not an inbound call, we likely mean the opposite of the above
+            from_phone = os.getenv("FROM_PHONE")
+            to_phone = os.getenv("TO_PHONE")
+
+        logger.info(f"Sending text message from {from_phone} to {to_phone}...")
         message = client.messages.create(
-            from_=os.getenv("FROM_PHONE"),
             body=action_input.params.message,
-            to=os.getenv("TO_PHONE"),
+            to=to_phone,
         )
-        logger.info(f"Sent text message: {message.sid}")
+        logger.info(f"Sent text message from {from_phone} to {to_phone}: {message.sid}")
         logger.debug(f"Message body: {action_input.params.message}")
 
         return ActionOutput(

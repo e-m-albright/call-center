@@ -15,6 +15,7 @@ from vocode.streaming.telephony.server.base import (
 
 from src import eventsmanager
 from src.agent import openai
+from src.agent.prompt import agenda
 from src.agent import AppAgentFactory
 from src.agent.action.texting import TwilioSendTextActionConfig
 from src.synthesizer import elevenlabs
@@ -36,7 +37,8 @@ def server(base_url: str, config_manager: RedisConfigManager, logger: logging.Lo
                 agent_config=openai.cnf(
                     generate_responses=True,
                     end_conversation_on_goodbye=True,
-                    # TODO see the texting action for note on specifying inbound number
+                    prompt_preamble=agenda.test_preamble,
+                    # actions=[TwilioSendTextActionConfig(config_manager=config_manager)], # doesn't work, lame.
                     actions=[TwilioSendTextActionConfig()],
                 ),
                 transcriber_config=deepgram.cnf_for_telephone(),
