@@ -12,9 +12,11 @@ from src.agent.prompt import agenda
 
 
 def cnf(*args, **kwargs) -> AgentConfig:
+    initial_message = kwargs.pop("initial_message", agenda.initial)
+    prompt_preamble = kwargs.pop("prompt_preamble", agenda.preamble)
     return ChatGPTAgentConfig(
-        initial_message=BaseMessage(text=agenda.initial),
-        prompt_preamble=agenda.preamble,
+        initial_message=BaseMessage(text=initial_message),
+        prompt_preamble=prompt_preamble,
         *args,
         **kwargs,
     )

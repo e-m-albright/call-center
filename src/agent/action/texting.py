@@ -51,13 +51,9 @@ class TwilioSendText(
     async def run(
         self, action_input: ActionInput[TwilioSendTextParameters]
     ) -> ActionOutput[TwilioSendTextResponse]:
-        logger.info("Text message action triggered")
-
-        logger.info(f"Message body: {action_input}")
-        logger.info(f"ac: {action_input.action_config}")
-        logger.info(f"ci: {action_input.conversation_id}")
-        logger.info(f"p: {action_input.params}")
-        logger.info(f"umt: {action_input.user_message_tracker}")
+        logger.info(
+            f"Text message action triggered in conversation {action_input.conversation_id}"
+        )
 
         account_sid = os.environ["TWILIO_ACCOUNT_SID"]
         auth_token = os.environ["TWILIO_AUTH_TOKEN"]
