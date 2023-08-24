@@ -11,6 +11,13 @@ This application was made to accomplish the following requirements
 - Respond with fake providers and availabilities
 - Text the caller their selected appointment date, time, and which doctor they'll see
 
+It uses the following services & packages to make this happen
+- Voice based app framework - [Vocode.dev](https://www.vocode.dev/)
+- Phone number registration & routing - [Twilio](https://www.twilio.com/en-us)
+- Speech to text transcription - [Deepgram](https://deepgram.com/)
+- Text to speech synthesis - [ElevenLabs](https://elevenlabs.io/speech-synthesis)
+- LLM - [OpenAI](https://openai.com/)
+
 
 # Telephony
 
@@ -67,5 +74,4 @@ Use python or use poetry like so `poetry run python /script/conv.py`
 
 # TODOs
 
-- Agent texting - eventmanager or action?
-- Fix call-out script?
+- Agent texting - get the inbound number or use the transcript to get a number
