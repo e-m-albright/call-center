@@ -28,6 +28,7 @@ config_manager = RedisConfigManager()
 
 
 # --- Set up ngrok tunnel unless routing is handled another way
+
 if not BASE_URL:
     ngrok_auth = os.environ.get("NGROK_AUTH_TOKEN")
     if ngrok_auth is not None:
