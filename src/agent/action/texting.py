@@ -93,6 +93,7 @@ class TwilioSendText(
 
         logger.info(f"Sending text message from {from_phone} to {to_phone}...")
         message = client.messages.create(
+            from_=from_phone,
             body=action_input.params.message,
             to=to_phone,
         )

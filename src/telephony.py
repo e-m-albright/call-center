@@ -37,7 +37,8 @@ def server(base_url: str, config_manager: RedisConfigManager, logger: logging.Lo
                 agent_config=openai.cnf(
                     generate_responses=True,
                     end_conversation_on_goodbye=True,
-                    prompt_preamble=agenda.test_preamble,
+                    # prompt_preamble=agenda.test_preamble,
+                    prompt_preamble=agenda.preamble,
                     # actions=[TwilioSendTextActionConfig(config_manager=config_manager)], # doesn't work, lame.
                     actions=[TwilioSendTextActionConfig()],
                 ),
